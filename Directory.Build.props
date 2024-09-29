@@ -3,11 +3,5 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageVersion Include="ModularPipelines" Version="2.42.59" />
-		<PackageVersion Include="ModularPipelines.DotNet" Version="2.42.59" />
-	</ItemGroup>
 </Project>

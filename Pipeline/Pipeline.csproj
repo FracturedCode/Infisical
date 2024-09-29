@@ -8,6 +8,8 @@
 	<ItemGroup>
 		<PackageReference Include="ModularPipelines" />
 		<PackageReference Include="ModularPipelines.DotNet" />
+		<PackageReference Include="ModularPipelines.Git" />
+		<PackageReference Include="CliWrap" />
 	</ItemGroup>
 
 </Project>
