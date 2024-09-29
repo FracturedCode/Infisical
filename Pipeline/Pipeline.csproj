@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>Net.FracturedCode.Infisical.Pipeline</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ModularPipelines" />
+		<PackageReference Include="ModularPipelines.DotNet" />
+	</ItemGroup>
+
+</Project>
