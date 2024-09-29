@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<IsAspireHost>true</IsAspireHost>
+		<UserSecretsId>5731e415-dce4-49a5-a0fb-0f015551e377</UserSecretsId>
+		<RootNamespace>Net.FracturedCode.Infisical.AppHost</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.0"/>
+		<PackageReference Include="Nall.Aspire.Hosting.DependsOn.PostgreSQL" Version="1.0.1" />
+		<PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.0" />
+		<PackageReference Include="Aspire.Hosting.Redis" Version="8.2.0" />
+		<PackageReference Include="CliWrap" Version="3.6.6" />
+	</ItemGroup>
+
+</Project>
