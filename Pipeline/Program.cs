@@ -1,9 +1,8 @@
-﻿using ModularPipelines.Context;
-using ModularPipelines.DotNet.Extensions;
-using ModularPipelines.Host;
-using ModularPipelines.Modules;
+﻿using ModularPipelines.Host;
+using Net.FracturedCode.Infisical.Pipeline;
 
 await PipelineHostBuilder.Create()
+	.AddModule<DownloadInfisicalSpec>()
 	.ExecutePipelineAsync();
 
 /*
@@ -11,9 +10,12 @@ await PipelineHostBuilder.Create()
  * start infisical
  * download infisical API spec
  * stop infisical
+ * 
  * nswag generation
  * nswag correction
+ * restore
  * build
+ * test
  * pack
  * upload
 */
