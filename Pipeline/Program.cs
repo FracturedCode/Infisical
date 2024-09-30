@@ -3,6 +3,7 @@ using Net.FracturedCode.Infisical.Pipeline;
 
 await PipelineHostBuilder.Create()
 	.AddModule<DownloadInfisicalSpec>()
+	.AddModule<GenerateInfisicalClients>()
 	.ExecutePipelineAsync();
 
 /*
@@ -10,9 +11,9 @@ await PipelineHostBuilder.Create()
  * start infisical
  * download infisical API spec
  * stop infisical
- * 
  * nswag generation
  * nswag correction
+ * 
  * restore
  * build
  * test

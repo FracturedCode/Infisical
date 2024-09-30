@@ -10,6 +10,7 @@
 		<PackageReference Include="ModularPipelines.DotNet" />
 		<PackageReference Include="ModularPipelines.Git" />
 		<PackageReference Include="CliWrap" />
+		<PackageReference Include="NSwag.CodeGeneration.CSharp" />
 	</ItemGroup>
 
 </Project>
