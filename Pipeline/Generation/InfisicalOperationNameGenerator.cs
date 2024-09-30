@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using NSwag;
 using NSwag.CodeGeneration.OperationNameGenerators;
 
@@ -7,9 +8,6 @@ internal class InfisicalOperationNameGenerator : IOperationNameGenerator
 {
 	public bool SupportsMultipleClients => true;
 
-	// Because for some reason extending and overriding the virtual doesn't work
-	private MultipleClientsFromPathSegmentsOperationNameGenerator _innerGenerator = new();
-
 	public string GetClientName(
 		OpenApiDocument document,
 		string path,
@@ -17,24 +15,67 @@ internal class InfisicalOperationNameGenerator : IOperationNameGenerator
 		OpenApiOperation operation
 	)
 	{
-		List<string> components = path
-			.Split('/')
-			.Where(c => !c.Contains("{") && !string.IsNullOrWhiteSpace(c))
-			.ToList();
+		List<string> components = getPathComponents(path);
 
 		components = components.First() switch
 		{
 			"api" => components.Skip(1).Take(2).ToList(), // ex: ["v1", "secrets"]
 			".well-known" => ["well", "known"],
-			_ => throw new NotSupportedException("url component not supported")
+			_ => throw _rootException
 		};
 
+		return normalizeAndJoin(components);
+	}
+
+	public string GetOperationName(OpenApiDocument document, string path, string httpMethod, OpenApiOperation operation)
+	{
+		List<string> components = getPathComponents(path);
+		components = components.First() switch
+		{
+			"api" => components.Skip(3).ToList(),
+			".well-known" => components.Skip(1).ToList(),
+			_ => throw _rootException
+		};
+		var queryParams = operation.Parameters.Where(x => x.IsRequired && x.Kind == OpenApiParameterKind.Query).ToList();
+		bool isQueryBy = queryParams.Count > 0;
+		string operationName = components.Any() switch
+		{
+			true => normalizeAndJoin(components) + getByClause(queryParams),
+			false when !isQueryBy => "",
+			false when isQueryBy => $"All{getByClause(queryParams)}",
+			_ => throw new UnreachableException()
+		};
+
+		return httpMethod + operationName;
+	}
+
+	private static string getByClause(List<OpenApiParameter> queryParams)
+	{
+		if (queryParams.Count < 1)
+		{
+			return string.Empty;
+		}
+
+		return "By" + queryParams.Select(p => p.Name.CapitalizeFirstChar()).Aggregate((x, y) => $"{x}And{y}");
+	}
+
+	private static NotSupportedException _rootException => new("root url path component not supported");
+	
+	private static string normalizeAndJoin(List<string> components)
+	{
+		if (!components.Any())
+		{
+			return string.Empty;
+		}
 		return components
 			.SelectMany(x => x.Split('-'))
 			.Select(x => x.CapitalizeFirstChar())
 			.Aggregate((x, y) => $"{x}{y}");
 	}
 
-	public string GetOperationName(OpenApiDocument document, string path, string httpMethod, OpenApiOperation operation) =>
-		_innerGenerator.GetOperationName(document, path, httpMethod, operation);
+	private static List<string> getPathComponents(string path) =>
+		path
+			.Split('/')
+			.Where(c => !c.Contains("{") && !string.IsNullOrWhiteSpace(c))
+			.ToList();
 }
