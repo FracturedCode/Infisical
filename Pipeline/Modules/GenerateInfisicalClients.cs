@@ -9,7 +9,7 @@ using NSwag;
 using NSwag.CodeGeneration.CSharp;
 using Module = ModularPipelines.Modules.Module;
 
-namespace Net.FracturedCode.Infisical.Pipeline;
+namespace Net.FracturedCode.Infisical.Pipeline.Modules;
 
 [DependsOn<DownloadInfisicalSpec>]
 public class GenerateInfisicalClients : Module

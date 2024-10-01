@@ -11,7 +11,7 @@ using ModularPipelines.Modules;
 using Polly;
 using Polly.Retry;
 
-namespace Net.FracturedCode.Infisical.Pipeline;
+namespace Net.FracturedCode.Infisical.Pipeline.Modules;
 
 // TODO may be better to use aspire testing framework
 // https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/testing?pivots=xunit

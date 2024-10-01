@@ -1,5 +1,5 @@
 ﻿using ModularPipelines.Host;
-using Net.FracturedCode.Infisical.Pipeline;
+using Net.FracturedCode.Infisical.Pipeline.Modules;
 
 await PipelineHostBuilder.Create()
 	.AddModule<DownloadInfisicalSpec>()
