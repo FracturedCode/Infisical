@@ -6,6 +6,7 @@ await PipelineHostBuilder.Create()
 	.AddModule<GenerateInfisicalClients>()
 	.AddModule<Build>()
 	.AddModule<Test>()
+	.AddModule<Pack>()
 	.ExecutePipelineAsync();
 
 /*
@@ -18,7 +19,7 @@ await PipelineHostBuilder.Create()
  * restore
  * build
  * test
- * 
  * pack
+ * 
  * upload
 */
