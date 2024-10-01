@@ -5,6 +5,7 @@ await PipelineHostBuilder.Create()
 	.AddModule<DownloadInfisicalSpec>()
 	.AddModule<GenerateInfisicalClients>()
 	.AddModule<Build>()
+	.AddModule<Test>()
 	.ExecutePipelineAsync();
 
 /*
@@ -16,8 +17,8 @@ await PipelineHostBuilder.Create()
  * nswag correction
  * restore
  * build
- * 
  * test
+ * 
  * pack
  * upload
 */
