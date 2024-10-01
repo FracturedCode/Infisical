@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Humanizer.Core" />
 		<PackageReference Include="ModularPipelines" />
 		<PackageReference Include="ModularPipelines.DotNet" />
 		<PackageReference Include="ModularPipelines.Git" />

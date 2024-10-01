@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Humanizer;
 using NSwag;
 using NSwag.CodeGeneration.OperationNameGenerators;
 
@@ -38,8 +39,11 @@ internal class InfisicalOperationNameGenerator : IOperationNameGenerator
 		};
 		var queryParams = operation.Parameters.Where(x => x.IsRequired && x.Kind == OpenApiParameterKind.Query).ToList();
 		bool isQueryBy = queryParams.Count > 0;
+		var pathParams = operation.Parameters.Where(x => x.IsRequired && x.Kind == OpenApiParameterKind.Path).ToList();
+		var isPathBy = pathParams.Count > 0;
 		string operationName = components.Any() switch
 		{
+			true when isPathBy => normalizeAndJoin(components.Select((c, i) => i == 0 && !c.Contains('{') ? c.Singularize(false) : c).ToList()) + getByClause(queryParams),
 			true => normalizeAndJoin(components) + getByClause(queryParams),
 			false when !isQueryBy => "",
 			false when isQueryBy => $"All{getByClause(queryParams)}",
@@ -63,6 +67,7 @@ internal class InfisicalOperationNameGenerator : IOperationNameGenerator
 	
 	private static string normalizeAndJoin(List<string> components)
 	{
+		components = components.Where(c => !c.Contains('{')).ToList();
 		if (!components.Any())
 		{
 			return string.Empty;
@@ -76,6 +81,6 @@ internal class InfisicalOperationNameGenerator : IOperationNameGenerator
 	private static List<string> getPathComponents(string path) =>
 		path
 			.Split('/')
-			.Where(c => !c.Contains("{") && !string.IsNullOrWhiteSpace(c))
+			.Where(c => !string.IsNullOrWhiteSpace(c))
 			.ToList();
 }
