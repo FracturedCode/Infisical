@@ -25,7 +25,7 @@ public class Upload(IOptions<NugetOptions> nugetOptions) : Module
 
 public record NugetOptions
 {
-	public string? ApiKey { get; init; }
+	public required string ApiKey { get; init; }
 	public bool PushToProd { get; init; }
 }
 
