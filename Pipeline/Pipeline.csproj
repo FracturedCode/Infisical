@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Net.FracturedCode.Infisical.Pipeline</RootNamespace>
+		<UserSecretsId>34462b89-80cc-43d6-a3c7-3ce44e9f1338</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>

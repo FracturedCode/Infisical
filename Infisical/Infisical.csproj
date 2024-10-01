@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
 	<PropertyGroup>
 		<RootNamespace>Net.FracturedCode.Infisical</RootNamespace>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
 		<Authors>FracturedCode</Authors>
 		<Description>A client library for Infisical's API</Description>
@@ -11,9 +12,14 @@
 		<RepositoryUrl>https://github.com/FracturedCode/Infisical</RepositoryUrl>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageVersion>1.0.0</PackageVersion>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<EmbedAllSource>true</EmbedAllSource>
+		<DebugType>Embedded</DebugType>
+		<PackageId>Net.FracturedCode.Infisical</PackageId>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" />
 	</ItemGroup>
+
 </Project>
