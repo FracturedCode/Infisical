@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Humanizer;
+using Net.FracturedCode.Infisical.Pipeline.Extensions;
 using NSwag;
 using NSwag.CodeGeneration.OperationNameGenerators;
 

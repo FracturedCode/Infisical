@@ -1,4 +1,4 @@
-namespace Net.FracturedCode.Infisical.Pipeline;
+namespace Net.FracturedCode.Infisical.Pipeline.Extensions;
 
 // TODO put in library?
 internal static class StringExtensions
