@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ModularPipelines.Host;
 using Net.FracturedCode.Infisical.Pipeline.Modules;
+using Net.FracturedCode.Infisical.Pipeline;
 
 await PipelineHostBuilder.Create()
 	.ConfigureAppConfiguration((_, cb) =>
@@ -12,10 +13,5 @@ await PipelineHostBuilder.Create()
 	{
 		sc.Configure<NugetOptions>(hbc.Configuration.GetSection("Nuget"));
 	})
-	.AddModule<DownloadInfisicalSpec>()
-	.AddModule<GenerateInfisicalClients>()
-	.AddModule<Build>()
-	.AddModule<Test>()
-	.AddModule<Pack>()
-	.AddModule<Upload>()
+	.AddAllModules()
 	.ExecutePipelineAsync();

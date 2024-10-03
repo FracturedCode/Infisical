@@ -4,6 +4,8 @@
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Net.FracturedCode.Infisical.Pipeline</RootNamespace>
 		<UserSecretsId>34462b89-80cc-43d6-a3c7-3ce44e9f1338</UserSecretsId>
+		<IsAotCompatible>true</IsAotCompatible>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +15,12 @@
 		<PackageReference Include="ModularPipelines.Git" />
 		<PackageReference Include="CliWrap" />
 		<PackageReference Include="NSwag.CodeGeneration.CSharp" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SourceGenerators\SourceGenerators.csproj"
+						OutputItemType="Analyzer"
+						ReferenceOutputAssembly="true" />
 	</ItemGroup>
 
 </Project>
