@@ -28,15 +28,16 @@ public class HttpClientHostExtensionsGenerator : IIncrementalGenerator
 				
 				namespace Net.FracturedCode.Infisical;
 				
-				public static partial class HostExtensions
+				public static partial class ServiceCollectionExtensions
 				{
 					[global::System.CodeDom.Compiler.GeneratedCodeAttribute("{{typeof(HttpClientHostExtensionsGenerator).FullName}}", "1.0.0")]
-					private static partial IHostApplicationBuilder addAllHttpClients(this IHostApplicationBuilder builder)
+					internal static partial IServiceCollection addAllHttpClients(this IServiceCollection services, Action<IHttpClientBuilder>? customHttpClientBuilder)
 					{
-						builder{{clientTypeList
-							.Select(c => $".Services.AddHttpClient<I{c.ClassName}, {c.ClassName}>()")
-							.Aggregate((x, y) => $"{x}\n			{y}")}};
-						return builder;
+						customHttpClientBuilder ??= _ => {};
+						{{clientTypeList
+							.Select(c => $"customHttpClientBuilder(services.AddHttpClient<I{c.ClassName}, {c.ClassName}>());")
+							.Aggregate((x, y) => $"{x}\n			{y}")}}
+						return services;
 					}
 				}
 				""", Encoding.UTF8));

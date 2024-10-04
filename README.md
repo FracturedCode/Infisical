@@ -50,7 +50,9 @@ are a good idea for serving secrets to a C# project.
 
 In your host setup:
 ```csharp
-builder.AddInfisicalClients();
+// the lambda that calls AddStandardResilience() is optional, it is used to draw
+// attention to the fact that you can customize the HttpClient for the Infisical clients
+builder.Services.AddInfisicalClients(b => b.AddStandardResilience());
 ```
 
 ## Build yourself
