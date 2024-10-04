@@ -7,15 +7,15 @@
     <PackageVersion Include="Humanizer.Core" Version="3.0.0-beta.54" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0-beta1.24415.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0-3.final" />
-    <PackageVersion Include="ModularPipelines" Version="2.42.59" />
-    <PackageVersion Include="ModularPipelines.DotNet" Version="2.42.59" />
-    <PackageVersion Include="ModularPipelines.Git" Version="2.42.59" />
-    <PackageVersion Include="Aspire.Hosting.AppHost" Version="8.2.0" />
+    <PackageVersion Include="ModularPipelines" Version="2.42.67" />
+    <PackageVersion Include="ModularPipelines.DotNet" Version="2.42.67" />
+    <PackageVersion Include="ModularPipelines.Git" Version="2.42.67" />
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="8.2.1" />
     <PackageVersion Include="Nall.Aspire.Hosting.DependsOn.PostgreSQL" Version="1.0.1" />
-    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="8.2.0" />
-    <PackageVersion Include="Aspire.Hosting.Redis" Version="8.2.0" />
+    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="8.2.1" />
+    <PackageVersion Include="Aspire.Hosting.Redis" Version="8.2.1" />
     <PackageVersion Include="NSwag.CodeGeneration.CSharp" Version="14.1.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="TUnit" Version="0.1.877" />
+    <PackageVersion Include="TUnit" Version="0.1.916" />
   </ItemGroup>
 </Project>
