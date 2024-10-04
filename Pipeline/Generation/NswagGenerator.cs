@@ -13,7 +13,7 @@ namespace Net.FracturedCode.Infisical.Pipeline.Generation;
 internal class NswagGenerator(
 	OpenApiDocument document,
 	string nswagTemplateJson,
-	Folder sdkProjectFolder,
+	Folder outputDir,
 	ILogger logger,
 	CancellationToken cancellationToken)
 {
@@ -31,7 +31,7 @@ internal class NswagGenerator(
 		prop.SetValue(settings, true);
 		//settings.CodeGeneratorSettings.TypeNameGenerator = new InfisicalTypeNameGenerator();
 		settings.OperationNameGenerator = new InfisicalOperationNameGenerator();
-		settings.CSharpGeneratorSettings.Namespace = "Net.FracturedCode.Infisical";
+		settings.CSharpGeneratorSettings.Namespace = "Net.FracturedCode.Infisical.Clients";
 		
 		CSharpClientGenerator generator = new(document, settings);
 
@@ -52,7 +52,7 @@ internal class NswagGenerator(
 		cancellationToken.ThrowIfCancellationRequested();
 
 		// Save
-		await sdkProjectFolder.GetFile($"{generationName}.cs").WriteAsync(generation, cancellationToken);
+		await outputDir.GetFile($"{generationName}.g.cs").WriteAsync(generation, cancellationToken);
 	}
 }
 

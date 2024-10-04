@@ -22,13 +22,14 @@ public class GenerateInfisicalClients : Module
 
 		OpenApiDocument document = await OpenApiDocument.FromJsonAsync(specJson, cancellationToken);
 
-		Folder sdkProjectFolder = context.Git().RootDirectory.GetFolder("Infisical");
+		Folder sdkClientFolder = context.Git().RootDirectory.GetFolder("Infisical/Clients");
+		sdkClientFolder.Create();
 
-		string nswagTemplateJson = await sdkProjectFolder
+		string nswagTemplateJson = await sdkClientFolder
 			.GetFile("nswag.template.json")
 			.ReadAsync(cancellationToken);
 
-		NswagGenerator generator = new(document, nswagTemplateJson, sdkProjectFolder, context.Logger, cancellationToken);
+		NswagGenerator generator = new(document, nswagTemplateJson, sdkClientFolder, context.Logger, cancellationToken);
 
 		IEnumerable<(string, Expression<Func<CSharpClientGeneratorSettings, bool>>)> generations =
 		[
