@@ -484,4 +484,4 @@ $RECYCLE.BIN/
 *.swp
 
 
-Infisical/Clients/*.cs
+*.g.cs

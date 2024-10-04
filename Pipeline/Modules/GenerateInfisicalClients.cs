@@ -22,16 +22,17 @@ public class GenerateInfisicalClients : Module
 
 		OpenApiDocument document = await OpenApiDocument.FromJsonAsync(specJson, cancellationToken);
 
-		Folder sdkClientFolder = context.Git().RootDirectory.GetFolder("Infisical/Clients");
-		sdkClientFolder.Create();
+		Folder sdkFolder = context.Git().RootDirectory.GetFolder("Infisical");
 
-		string nswagTemplateJson = await sdkClientFolder
+		Folder sdkGeneratedFolder = sdkFolder.GetFolder("Generated").Create();
+
+		string nswagTemplateJson = await sdkFolder
 			.GetFile("nswag.template.json")
 			.ReadAsync(cancellationToken);
 
-		NswagGenerator generator = new(document, nswagTemplateJson, sdkClientFolder, context.Logger, cancellationToken);
+		NswagGenerator generator = new(document, nswagTemplateJson, sdkGeneratedFolder, context.Logger, cancellationToken);
 
-		IEnumerable<(string, Expression<Func<CSharpClientGeneratorSettings, bool>>)> generations =
+		List<(string, Expression<Func<CSharpClientGeneratorSettings, bool>>)> generations =
 		[
 			("Clients", s => s.GenerateClientClasses),
 			("Dtos", s => s.GenerateDtoTypes),
@@ -41,7 +42,12 @@ public class GenerateInfisicalClients : Module
 
 		// TODO SubModule NullReferenceException
 		await generations.ForEachAsync(
-				async x => await generator.GenerateFile(x.Item1, x.Item2),
+				async x => await generator.GenerateFile(
+					x.Item1,
+					x.Item2,
+					generations
+						.Where(g => g.Item1 != x.Item1)
+						.Select(g => g.Item1)),
 				cancellationToken)
 			.ProcessInParallel()
 			.WaitAsync();

@@ -21,7 +21,9 @@ internal class NswagGenerator(
 	{
 		MaxDepth = 3
 	};
-	public async Task GenerateFile(string generationName, Expression<Func<CSharpClientGeneratorSettings, bool>> generationTargetExpression)
+
+	private const string _baseNamespace = "Net.FracturedCode.Infisical";
+	public async Task GenerateFile(string generationName, Expression<Func<CSharpClientGeneratorSettings, bool>> generationTargetExpression, IEnumerable<string> partialUsingNamespaces)
 	{
 		// TODO configure in C#
 		CSharpClientGeneratorSettings settings =
@@ -29,16 +31,18 @@ internal class NswagGenerator(
 			?? throw new Exception("Could not read nswag template or template was null");
 		var prop = (PropertyInfo)((MemberExpression)generationTargetExpression.Body).Member;
 		prop.SetValue(settings, true);
-		//settings.CodeGeneratorSettings.TypeNameGenerator = new InfisicalTypeNameGenerator();
+		settings.CodeGeneratorSettings.TypeNameGenerator = new InfisicalTypeNameGenerator();
 		settings.OperationNameGenerator = new InfisicalOperationNameGenerator();
-		settings.CSharpGeneratorSettings.Namespace = "Net.FracturedCode.Infisical.Clients";
+		settings.CSharpGeneratorSettings.Namespace = $"{_baseNamespace}.{generationName}";
+		settings.AdditionalNamespaceUsages = partialUsingNamespaces
+			.Select(x => $"{_baseNamespace}.{x}")
+			.ToArray();
 		
 		CSharpClientGenerator generator = new(document, settings);
 
 		// Generate
 		// TODO split further??
-		string generation = await Task.Run(
-			() =>
+		string generation = await Task.Run(() =>
 			{
 				logger.LogInformation("Generating {generationName}", generationName);
 				return generator.GenerateFile(ClientGeneratorOutputType.Full);
@@ -55,11 +59,3 @@ internal class NswagGenerator(
 		await outputDir.GetFile($"{generationName}.g.cs").WriteAsync(generation, cancellationToken);
 	}
 }
-
-/*internal class InfisicalTypeNameGenerator : ITypeNameGenerator
-{
-	public string Generate(JsonSchema schema, string? typeNameHint, IEnumerable<string> reservedTypeNames)
-	{
-		return "";
-	}
-}*/
