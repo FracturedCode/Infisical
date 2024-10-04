@@ -18,6 +18,10 @@ public class PipelineHostBuilderExtensionsIncrementalGenerator : IIncrementalGen
 		
 		context.RegisterSourceOutput(moduleTypes, (c, moduleTypeList) =>
 		{
+			if (!moduleTypeList.Any())
+			{
+				return;
+			}
 			string code = $$"""
 				using System;
 				using ModularPipelines.Host;
