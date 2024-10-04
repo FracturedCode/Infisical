@@ -27,7 +27,7 @@ public class PipelineHostBuilderExtensionsIncrementalGenerator : IIncrementalGen
 				
 				public static partial class PipelineHostBuilderExtensions
 				{
-					[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Net.FracturedCode.Infisical.SourceGenerators.PipelineHostBuilderExtensionsIncrementalGenerator", "1.0.0")]
+					[global::System.CodeDom.Compiler.GeneratedCodeAttribute("{{typeof(PipelineHostBuilderExtensionsIncrementalGenerator).FullName}}", "1.0.0")]
 					public static partial PipelineHostBuilder AddAllModules(this PipelineHostBuilder builder)
 					{
 						{{moduleTypeList
@@ -42,9 +42,9 @@ public class PipelineHostBuilderExtensionsIncrementalGenerator : IIncrementalGen
 		});
 	}
 
-	private record Model
+	private record Module
 	{
-		public Model(string className)
+		public Module(string className)
 		{
 			ClassName = className;
 		}
@@ -57,9 +57,9 @@ public class PipelineHostBuilderExtensionsIncrementalGenerator : IIncrementalGen
 			classDecl.BaseList?.Types.Any(t => t.ToString().Contains("Module")) == true;
 	}
 
-	private static Model getModuleClass(GeneratorSyntaxContext context, CancellationToken _)
+	private static Module getModuleClass(GeneratorSyntaxContext context, CancellationToken _)
 	{
 		var cds = (ClassDeclarationSyntax)context.Node;
-		return new Model(cds.Identifier.ValueText);
+		return new Module(cds.Identifier.ValueText);
 	}
 }
