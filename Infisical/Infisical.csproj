@@ -7,7 +7,7 @@
 	<PropertyGroup>
 		<Authors>FracturedCode</Authors>
 		<Description>A client library for Infisical's API</Description>
-		<!-- TODO <PackageReadmeFile>README.md</PackageReadmeFile> -->
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/FracturedCode/Infisical</RepositoryUrl>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -17,6 +17,10 @@
 		<DebugType>Embedded</DebugType>
 		<PackageId>Net.FracturedCode.Infisical</PackageId>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="../README.md" Pack="true" PackagePath="/" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" />
