@@ -16,6 +16,7 @@ var redis = builder.AddRedis("redis-infisical");
 
 IResourceBuilder<ContainerResource> addInfisicalContainer(string name) =>
 	builder.AddContainer(name, "infisical/infisical", "v0.83.0-postgres")
+		.WithContainerRuntimeArgs("--net=host")
 		.WithReference(infisicalDb, ConnectionStringType.Uri, "DB_CONNECTION_URI");
 
 var infisicalMigrations = addInfisicalContainer("infisical-migrations")
@@ -25,7 +26,8 @@ var encryptionKey = builder.AddPersistentSecret("infisical-encryptionKey", () =>
 var authSecret = builder.AddPersistentSecret("infisical-authSecret", () => Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
 addInfisicalContainer("infisical")
 	.WaitForCompletion(infisicalMigrations)
-	.WithEnvironment("REDIS_URL", () => $"{redis.Resource.PrimaryEndpoint.ContainerHost}:{redis.Resource.PrimaryEndpoint.Port}")
+	.WaitFor(redis)
+	.WithEnvironment("REDIS_URL", () => $"{redis.Resource.PrimaryEndpoint.Host}:{redis.Resource.PrimaryEndpoint.Port}")
 	.WithEnvironment("ENCRYPTION_KEY", encryptionKey)
 	.WithEnvironment("AUTH_SECRET", authSecret)
 	.WithEnvironment("PORT", "80")

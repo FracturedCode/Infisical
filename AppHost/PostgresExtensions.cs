@@ -13,7 +13,7 @@ public static class PostgresExtensions
 
 		// WARNING: this will mess up the manifest for the containers
 		var host = isInContainer
-			? ReferenceExpression.Create($"host.docker.internal")
+			? ReferenceExpression.Create($"localhost")
 			: ReferenceExpression.Create($"{pg.PrimaryEndpoint.Property(EndpointProperty.Host)}");
 
 		return ReferenceExpression.Create(
