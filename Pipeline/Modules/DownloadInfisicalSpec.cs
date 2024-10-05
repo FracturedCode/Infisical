@@ -13,8 +13,6 @@ using Polly.Retry;
 
 namespace Net.FracturedCode.Infisical.Pipeline.Modules;
 
-// TODO may be better to use aspire testing framework
-// https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/testing?pivots=xunit
 public class DownloadInfisicalSpec : Module<string>
 {
 	protected override async Task<string?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
