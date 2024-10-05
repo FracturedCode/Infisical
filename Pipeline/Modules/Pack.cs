@@ -22,9 +22,12 @@ public partial class Pack : Module<File>
 				Configuration = "Release"
 			},
 			cancellationToken);
-		return packageRegex().Matches(packResult.StandardOutput)
+		var pkgs = packageRegex().Matches(packResult.StandardOutput)
 			.Select(f => new File(f.Value))
-			.Single();
+			.ToList();
+		// Ensure snupkg exists
+		_ = pkgs.Single(p => p.Extension == ".snupkg");
+		return pkgs.Single(p => p.Extension == ".nupkg");
 	}
 
 	[GeneratedRegex(@"(?<=Successfully created package ').*(?='\.)")]

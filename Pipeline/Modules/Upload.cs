@@ -13,6 +13,7 @@ public class Upload(IOptions<NugetOptions> nugetOptions) : Module
 {
 	protected override async Task<IDictionary<string, object>?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
 	{
+		// Symbols (snupkg) are implicitly pushed to the symbol server.
 		await context.DotNet().Nuget.Push(new DotNetNugetPushOptions
 		{
 			ApiKey = nugetOptions.Value.ApiKey,

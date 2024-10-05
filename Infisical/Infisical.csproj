@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<!-- General nuspec props -->
 		<Authors>FracturedCode</Authors>
 		<Description>A client library for Infisical's API</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -14,9 +15,37 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageVersion>1.0.0</PackageVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<EmbedAllSource>true</EmbedAllSource>
-		<DebugType>Embedded</DebugType>
 		<PackageId>Net.FracturedCode.Infisical</PackageId>
+
+		<!--
+			symbol package
+			https://github.com/dotnet/sourcelink?tab=readme-ov-file#pdb-distributions
+			"Keep in mind that including PDBs in the .nupkg increases the size of the package
+			and thus restore time for projects that consume your package"
+			Therefore, we will publish a separate symbols package.
+		-->
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<DebugType>portable</DebugType>
+		<!--
+			Essential. The generated nswag files are not included in source control.
+			https://github.com/dotnet/sourcelink/tree/main/docs#embeduntrackedsources
+		-->
+		<EmbedAllSources>true</EmbedAllSources>
+
+		<!-- sourcelink https://github.com/dotnet/sourcelink -->
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<!--
+			deterministic builds
+			https://devblogs.microsoft.com/dotnet/producing-packages-with-source-link/#deterministic-builds
+			"While deterministic builds are enabled by default in .NET SDK projects, there is an extra property,
+			ContinuousIntegrationBuild...These should not be enabled during local dev
+			or the debugger won’t be able to find the local source files."
+		-->
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -26,6 +55,9 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations"/>
 		<PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub">
+		  <PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" />
 	</ItemGroup>
 
