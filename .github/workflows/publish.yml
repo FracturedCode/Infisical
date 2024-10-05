@@ -1,0 +1,29 @@
+name: publish.yml
+
+on:
+  workflow_dispatch: 
+    inputs:
+      PushToProd:
+        description: 'Push to production nuget or integration nuget'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: 'Cache: nuget'
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      
+      - name: 'Publish'
+        run: dotnet run --project ./Pipeline/Pipeline.csproj
+        env:
+          Nuget__PushToProd: ${{ inputs.PushToProd }}
+          Nuget__ApiKey: ${{ inputs.PushToProd == 'true' && secrets.NugetApiKey || secrets.IntNugetApiKey }}
