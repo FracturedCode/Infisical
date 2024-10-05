@@ -4,7 +4,7 @@ on:
   workflow_dispatch: 
     inputs:
       PushToProd:
-        description: 'Push to production nuget or integration nuget'
+        description: 'Push to production nuget'
         required: false
         default: false
         type: boolean
