@@ -7,6 +7,8 @@ using ModularPipelines.Modules;
 
 namespace Net.FracturedCode.Infisical.Pipeline.Modules;
 
+// TODO more checks. master branch, in pipeline
+
 [DependsOn<Pack>]
 [NugetIsConfiguredMandatoryCondition]
 public class Upload(IOptions<NugetOptions> nugetOptions) : Module

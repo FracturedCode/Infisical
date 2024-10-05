@@ -44,6 +44,7 @@
 			"While deterministic builds are enabled by default in .NET SDK projects, there is an extra property,
 			ContinuousIntegrationBuild...These should not be enabled during local dev
 			or the debugger won’t be able to find the local source files."
+			TODO control in pipeline
 		-->
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
