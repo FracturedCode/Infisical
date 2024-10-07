@@ -17,9 +17,36 @@ public class DownloadInfisicalSpec : Module<string>
 {
 	protected override async Task<string?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
 	{
-		var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		int port = await findFreeTcpPort();
+		/*
+		 * I spent probably 16 hours trying to get the AppHost working on the github runner.
+		 * There are some Aspire related docker networking issues in the github runner that I cannot replicate anywhere else.
+		 * I tried everything short of manipulating iptables directly. Trust me, if you think of it, I have done it.
+		 * Since, according the Fowler, there will be a new networking model for containers in Aspire 9,
+		 * this will be couched. For now, we can fetch directly from the infisical website
+		 */
+		string? useRemoteServerConfigValue = context.Configuration["DownloadInfisicalSpec:UseRemoteServer"];
+		bool useRemoteServer = useRemoteServerConfigValue is null
+			? context.BuildSystemDetector.IsKnownBuildAgent
+			: useRemoteServerConfigValue == "true";
+		IInfisicalSpecDownloader dl = useRemoteServer
+			? new InfisicalComSpecDownloader()
+			: new AppHostSpecDownloader();
+		return await dl.GetSpec(context, cancellationToken);
+	}
+}
 
+internal interface IInfisicalSpecDownloader
+{
+	public Task<string> GetSpec(IPipelineContext context, CancellationToken ct);
+}
+
+internal class AppHostSpecDownloader : IInfisicalSpecDownloader
+{
+	public async Task<string> GetSpec(IPipelineContext context, CancellationToken ct)
+	{
+		var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+		int port = await findFreeTcpPort();
+		
 		DotNetRunOptions runOptions = new()
 		{
 			Project = context.Git().RootDirectory.GetFiles(f => f.Name == "AppHost.csproj").Single(),
@@ -66,7 +93,7 @@ public class DownloadInfisicalSpec : Module<string>
 
 		return specContent;
 	}
-
+	
 	private static async Task<int> findFreeTcpPort()
 	{
 		return await Task.Run(() =>
@@ -77,5 +104,13 @@ public class DownloadInfisicalSpec : Module<string>
 			listener.Stop();
 			return port;
 		});
+	}
+}
+
+internal class InfisicalComSpecDownloader : IInfisicalSpecDownloader
+{
+	public Task<string> GetSpec(IPipelineContext context, CancellationToken ct)
+	{
+		return context.Http.HttpClient.GetStringAsync("https://app.infisical.com/api/docs/json", ct);
 	}
 }
