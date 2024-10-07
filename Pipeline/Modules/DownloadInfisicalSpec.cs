@@ -48,16 +48,7 @@ public class DownloadInfisicalSpec : Module<string>
 		
 		var appHostHandle = context.DotNet().Run(runOptions, cts.Token);
 
-		string key = """
-		-----BEGIN OPENSSH PRIVATE KEY-----
-		b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-		QyNTUxOQAAACB6JeTfwZsRe/Ehz2FyzxxeCKjAwlLkrXvCXUk0sh7oywAAAJD0ckbT9HJG
-		0wAAAAtzc2gtZWQyNTUxOQAAACB6JeTfwZsRe/Ehz2FyzxxeCKjAwlLkrXvCXUk0sh7oyw
-		AAAEAqHGMM9uAlGO5pRRBZ5DNUBALUT+rQfZBqAL9VJKjNc3ol5N/BmxF78SHPYXLPHF4I
-		qMDCUuSte8JdSTSyHujLAAAACGdoQHZlbm9tAQIDBAU=
-		-----END OPENSSH PRIVATE KEY-----
-		
-		""";
+		string key = "<INSERT PRIVATE SSH KEY>"; // (the old one will not work)
 
 		var sshKeyFile = context.FileSystem.GetFolder("/home/runner").CreateFolder(".ssh").CreateFile("venom");
 		await Cli.Wrap("chmod").WithArguments(["0600", sshKeyFile]).ExecuteAsync(cancellationToken);
