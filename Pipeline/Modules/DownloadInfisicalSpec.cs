@@ -57,7 +57,7 @@ internal class AppHostSpecDownloader : IInfisicalSpecDownloader
 		var appHostHandle = context.DotNet().Run(runOptions, cts.Token);
 		
 		string specContent = await new ResiliencePipelineBuilder<string>()
-			.AddTimeout(TimeSpan.FromSeconds(60))
+			.AddTimeout(TimeSpan.FromMinutes(2))
 			.AddRetry(new RetryStrategyOptions<string>
 			{
 				Delay = TimeSpan.FromMilliseconds(250),
