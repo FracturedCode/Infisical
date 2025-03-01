@@ -63,7 +63,14 @@ builder.Services.AddInfisicalClients(b => b.AddStandardResilience());
 
 ### Consumption
 
-TODO expand
+```csharp
+public class MyService(IV3SecretsClient secretsClient) {
+    public string Fetch() {
+        var response = await secretsClient.GetRawAsync(...some args...., "secretName");
+        return response.Secrets.Single().SecretValue;
+    }
+}
+```
 
 ## Build yourself
 
@@ -78,14 +85,16 @@ The artifact will be in `./Infisical/bin/Release`
 Allow me to nerd out.
 
 ### Nuget packaging
-A great debugging and with
+A great debugging experience with
 [sourcelink](https://github.com/dotnet/sourcelink),
-deterministic build,
-and the symbol package with all sources embedded published to nuget.
+deterministic builds,
+and the symbol packages with all sources embedded published to nuget.
 
-I had to do some research to figure out what all the options were really doing.
-There is some comments in [Infisical.csproj](Infisical/Infisical.csproj)
-that you may find useful.
+I had to do some research and experimentation to figure out what all the 
+options were *really* doing. The documentation is sometimes unclear and 
+there are multiple ways to do things that may have tiny differences in outcome.
+There are some comments in [Infisical.csproj](Infisical/Infisical.csproj)
+that you may find useful for your own projects.
 
 ### C# [Modular Pipelines](https://github.com/thomhurst/ModularPipelines)
 
@@ -112,10 +121,14 @@ Here are the most important benefits in my view:
 ### Source generators
 
 There is some metaprogramming going on to avoid reflection. Really just for 
-fun, but this could be leveraged in the future for `NativeAot` compatability.
+fun, but this could be leveraged in future projects for `NativeAot` 
+compatability.
 
 ### .NET Aspire
 
+An infisical container is stood up in order to download the OpenApi spec. 
+This is more reproducible than downloading whatever is deployed to the 
+infisical website.
 
 
 ## License
