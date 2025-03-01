@@ -65,7 +65,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\SourceGenerators\SourceGenerators.csproj"
 						  OutputItemType="Analyzer"
-						  ReferenceOutputAssembly="true" />
+						  ReferenceOutputAssembly="true"
+						  PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
