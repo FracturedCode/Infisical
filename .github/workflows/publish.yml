@@ -9,6 +9,13 @@ on:
         default: false
         type: boolean
 
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
+  packages: write
+
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -27,7 +34,13 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       
       - name: 'Publish'
+        id: publish
         run: dotnet run --project ./Pipeline/Pipeline.csproj
         env:
           Nuget__PushToProd: ${{ inputs.PushToProd }}
           Nuget__ApiKey: ${{ inputs.PushToProd == 'true' && secrets.NugetApiKey || secrets.IntNugetApiKey }}
+
+      - name: 'Generate artifact attestation'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ${{ steps.publish.outputs.NupkgPath }}

@@ -23,12 +23,20 @@ public partial class Pack(IOptions<NugetOptions> nugetOptions) : Module<File>
 			Configuration = "Release",
 			VersionSuffix = nugetOptions.Value.PushToProd ? null : $"alpha.{context.Git().Information.LastCommitShortSha}"
 		}, cancellationToken);
+		
 		var packages = packageRegex().Matches(packResult.StandardOutput)
 			.Select(f => new File(f.Value))
 			.ToList();
-		// Ensure snupkg exists
-		_ = packages.Single(p => p.Extension == ".snupkg");
-		return packages.Single(p => p.Extension == ".nupkg");
+		_ = packages.Single(p => p.Extension == ".snupkg"); // Ensure snupkg exists
+		File nupkg = packages.Single(p => p.Extension == ".nupkg");
+		
+		if (context.BuildSystemDetector.IsRunningOnGitHubActions)
+		{
+			string ghOutputPath = context.Configuration["GITHUB_OUTPUT"] ?? throw new Exception();
+			await System.IO.File.AppendAllTextAsync(ghOutputPath, $"NupkgPath={nupkg.Path}", cancellationToken);
+		}
+		
+		return nupkg;
 	}
 
 	[GeneratedRegex(@"(?<=Successfully created package ').*(?='\.)")]

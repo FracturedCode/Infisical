@@ -4,8 +4,6 @@ using ModularPipelines.Host;
 using Net.FracturedCode.Infisical.Pipeline.Modules;
 using Net.FracturedCode.Infisical.Pipeline;
 
-// TODO gh attestations?
-
 await PipelineHostBuilder.Create()
 	.ConfigureAppConfiguration((_, cb) =>
 	{

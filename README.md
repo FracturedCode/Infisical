@@ -140,6 +140,9 @@ An infisical container is stood up in order to download the OpenApi spec.
 This is more reproducible than downloading whatever is deployed to the 
 infisical website.
 
+### [GitHub attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds)
+
+> Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
 
 ## License
 
