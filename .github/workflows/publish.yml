@@ -31,9 +31,6 @@ jobs:
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       
-      - name: 'Download aspire' # TODO remove this step when aspire fixes the workload bugs
-        run: dotnet workload restore
-      
       - name: 'Publish'
         run: dotnet run --project ./Pipeline/Pipeline.csproj
         env:
