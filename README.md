@@ -144,6 +144,10 @@ infisical website.
 
 > Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
 
+### slnx
+
+This solution uses the new [slnx format](https://github.com/dotnet/sdk/issues/40913).
+
 ## License
 
 [LGPLv3](./LICENSE)
