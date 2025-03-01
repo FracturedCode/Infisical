@@ -8,11 +8,6 @@ on:
         required: false
         default: false
         type: boolean
-      UseRemoteSpec:
-        description: 'Use infisical.com spec instead of local instance'
-        required: false
-        default: false
-        type: boolean
 
 jobs:
   publish:
@@ -36,4 +31,3 @@ jobs:
         env:
           Nuget__PushToProd: ${{ inputs.PushToProd }}
           Nuget__ApiKey: ${{ inputs.PushToProd == 'true' && secrets.NugetApiKey || secrets.IntNugetApiKey }}
-          DownloadInfisicalSpec__UseRemoteServer: ${{ inputs.UseRemoteSpec }}

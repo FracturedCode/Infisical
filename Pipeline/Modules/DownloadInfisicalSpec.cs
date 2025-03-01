@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
+using CliWrap;
 using Microsoft.Extensions.Logging;
 using ModularPipelines.Context;
 using ModularPipelines.DotNet.Extensions;
@@ -17,18 +18,7 @@ public class DownloadInfisicalSpec : Module<string>
 {
 	protected override async Task<string?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
 	{
-		/*
-		 * I spent probably 16 hours trying to get the AppHost working on the github runner.
-		 * There are some Aspire related docker networking issues in the github runner that I cannot replicate anywhere else.
-		 * I tried everything short of manipulating iptables directly. Trust me, if you think of it, I have done it.
-		 * Since, according the Fowler, there will be a new networking model for containers in Aspire 9,
-		 * this will be couched. For now, we can fetch directly from the infisical website
-		 */
-		string? useRemoteServerConfigValue = context.Configuration["DownloadInfisicalSpec:UseRemoteServer"];
-		bool useRemoteServer = useRemoteServerConfigValue is null
-			? context.BuildSystemDetector.IsKnownBuildAgent
-			: useRemoteServerConfigValue == "true";
-		IInfisicalSpecDownloader dl = useRemoteServer
+		IInfisicalSpecDownloader dl = context.Configuration["DownloadInfisicalSpec:UseRemoteServer"] == "true"
 			? new InfisicalComSpecDownloader()
 			: new AppHostSpecDownloader();
 		return await dl.GetSpec(context, cancellationToken);
@@ -45,7 +35,7 @@ internal class AppHostSpecDownloader : IInfisicalSpecDownloader
 	public async Task<string> GetSpec(IPipelineContext context, CancellationToken ct)
 	{
 		var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-		int port = await findFreeTcpPort();
+		int port = 5005;
 		
 		DotNetRunOptions runOptions = new()
 		{
@@ -57,7 +47,7 @@ internal class AppHostSpecDownloader : IInfisicalSpecDownloader
 		var appHostHandle = context.DotNet().Run(runOptions, cts.Token);
 		
 		string specContent = await new ResiliencePipelineBuilder<string>()
-			.AddTimeout(TimeSpan.FromMinutes(2))
+			.AddTimeout(TimeSpan.FromMinutes(5))
 			.AddRetry(new RetryStrategyOptions<string>
 			{
 				Delay = TimeSpan.FromMilliseconds(250),
@@ -79,7 +69,8 @@ internal class AppHostSpecDownloader : IInfisicalSpecDownloader
 						throw new Exception("AppHost exited early.");
 					}
 
-					return await context.Http.HttpClient.GetStringAsync($"http://localhost:{port}/api/docs/json", token);
+					return await context.Http.HttpClient.GetStringAsync($"http://localhost:{port}/api/docs/json",
+						token);
 				},
 				cts.Token
 			);

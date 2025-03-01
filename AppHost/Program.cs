@@ -25,7 +25,7 @@ var encryptionKey = builder.AddPersistentSecret("infisical-encryptionKey", () =>
 var authSecret = builder.AddPersistentSecret("infisical-authSecret", () => Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
 addInfisicalContainer("infisical")
 	.WaitForCompletion(infisicalMigrations)
-	.WithEnvironment("REDIS_URL", () => $"{redis.Resource.PrimaryEndpoint.ContainerHost}:{redis.Resource.PrimaryEndpoint.Port}")
+	.WithEnvironment("REDIS_URL", () => $"{redis.Resource.Name}:{redis.Resource.PrimaryEndpoint.TargetPort}")
 	.WithEnvironment("ENCRYPTION_KEY", encryptionKey)
 	.WithEnvironment("AUTH_SECRET", authSecret)
 	.WithEnvironment("PORT", "80")

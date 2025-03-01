@@ -11,13 +11,13 @@ public static class PostgresExtensions
 			? ReferenceExpression.Create($"{pg.UserNameParameter}")
 			: ReferenceExpression.Create($"postgres");
 
-		// WARNING: this will mess up the manifest for the containers
+		// WARNING: this may mess up the manifest for the containers
 		var host = isInContainer
-			? ReferenceExpression.Create($"host.docker.internal")
-			: ReferenceExpression.Create($"{pg.PrimaryEndpoint.Property(EndpointProperty.Host)}");
+			? ReferenceExpression.Create($"{pg.Name}:{pg.PrimaryEndpoint.Property(EndpointProperty.TargetPort)}")
+			: ReferenceExpression.Create($"{pg.PrimaryEndpoint.Property(EndpointProperty.Host)}:{pg.PrimaryEndpoint.Property(EndpointProperty.Port)}");
 
 		return ReferenceExpression.Create(
-			$"postgresql://{userNameReference}:{pg.PasswordParameter}@{host}:{pg.PrimaryEndpoint.Property(EndpointProperty.Port)}/{db.DatabaseName}");
+			$"postgresql://{userNameReference}:{pg.PasswordParameter}@{host}/{db.DatabaseName}");
 	}
 	
 	public static IResourceBuilder<T> WithReference<T>(
