@@ -25,6 +25,16 @@ As compared to the first party SDK, this project has:
 dotnet add package Net.FracturedCode.Infisical
 ```
 
+## Versioning
+
+`<package version>-<compatible infisical version>`
+
+eg `1.0.0-0.112.0` means the `1.0.0` version of the package that is built 
+against Infisical `0.112.0`. The package version comes first because I am 
+more likely to introduce wild and breaking changes, and I want those to be 
+clearly communicated. Infisical, on the other hand, tends to have great 
+backwards compatibility; the exact version isn't as important.
+
 ## Usage
 
 Only helpers for [Infisical Universal Auth](https://infisical.com/docs/documentation/platform/identities/universal-auth)

@@ -15,7 +15,7 @@ var infisicalDb = builder.AddPostgres("postgres", null, pgPw)
 var redis = builder.AddRedis("redis-infisical");
 
 IResourceBuilder<ContainerResource> addInfisicalContainer(string name) =>
-	builder.AddContainer(name, "infisical/infisical", "v0.112.0-postgres")
+	builder.AddContainer(name, "infisical/infisical", "v0.112.0-postgres") // Change the version in Infisical.csproj as well
 		.WithReference(infisicalDb, ConnectionStringType.Uri, "DB_CONNECTION_URI");
 
 var encryptionKey = builder.AddPersistentSecret("infisical-encryptionKey", () => RandomNumberGenerator.GetHexString(32));
