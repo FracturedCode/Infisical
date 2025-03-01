@@ -35,7 +35,7 @@ internal class AppHostSpecDownloader : IInfisicalSpecDownloader
 	public async Task<string> GetSpec(IPipelineContext context, CancellationToken ct)
 	{
 		var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-		int port = 5005;
+		int port = await findFreeTcpPort();
 		
 		DotNetRunOptions runOptions = new()
 		{

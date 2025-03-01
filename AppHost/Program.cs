@@ -15,16 +15,12 @@ var infisicalDb = builder.AddPostgres("postgres", null, pgPw)
 var redis = builder.AddRedis("redis-infisical");
 
 IResourceBuilder<ContainerResource> addInfisicalContainer(string name) =>
-	builder.AddContainer(name, "infisical/infisical", "v0.83.0-postgres")
+	builder.AddContainer(name, "infisical/infisical", "v0.112.0-postgres")
 		.WithReference(infisicalDb, ConnectionStringType.Uri, "DB_CONNECTION_URI");
 
-var infisicalMigrations = addInfisicalContainer("infisical-migrations")
-	.WaitFor(infisicalDb)
-	.WithArgs("npm run migration:latest".Split(' '));
 var encryptionKey = builder.AddPersistentSecret("infisical-encryptionKey", () => RandomNumberGenerator.GetHexString(32));
 var authSecret = builder.AddPersistentSecret("infisical-authSecret", () => Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)));
 addInfisicalContainer("infisical")
-	.WaitForCompletion(infisicalMigrations)
 	.WithEnvironment("REDIS_URL", () => $"{redis.Resource.Name}:{redis.Resource.PrimaryEndpoint.TargetPort}")
 	.WithEnvironment("ENCRYPTION_KEY", encryptionKey)
 	.WithEnvironment("AUTH_SECRET", authSecret)
