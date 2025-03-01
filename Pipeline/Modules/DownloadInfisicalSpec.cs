@@ -61,6 +61,7 @@ internal class AppHostSpecDownloader : IInfisicalSpecDownloader
 			.AddRetry(new RetryStrategyOptions<string>
 			{
 				Delay = TimeSpan.FromMilliseconds(250),
+				MaxRetryAttempts = int.MaxValue,
 				ShouldHandle = new PredicateBuilder<string>()
 					// https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient.sendasync
 					// Only handle network issues and request timeouts
