@@ -13,7 +13,7 @@ public class Build : Module
 {
 	protected override async Task<IDictionary<string, object>?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
 	{
-		File solution = context.Git().RootDirectory.GetFile("Infisical.sln");
+		File solution = context.Git().RootDirectory.GetFile("Infisical.slnx");
 		await context.DotNet().Restore(new DotNetRestoreOptions { Path = solution }, cancellationToken);
 		await context.DotNet().Build(new DotNetBuildOptions { ProjectSolution = solution, Configuration = "Release" }, cancellationToken);
 		return await NothingAsync();

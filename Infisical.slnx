@@ -1,0 +1,7 @@
+﻿<Solution>
+  <Project Path="AppHost\AppHost.csproj" Type="Classic C#" />
+  <Project Path="Infisical\Infisical.csproj" Type="Classic C#" />
+  <Project Path="Pipeline\Pipeline.csproj" Type="Classic C#" />
+  <Project Path="SourceGenerators\SourceGenerators.csproj" Type="Classic C#" />
+  <Project Path="Tests\Tests.csproj" Type="Classic C#" />
+</Solution>
