@@ -38,7 +38,7 @@ jobs:
         run: dotnet run --project ./Pipeline/Pipeline.csproj
         env:
           Nuget__PushToProd: ${{ inputs.PushToProd }}
-          Nuget__ApiKey: ${{ secrets.NugetApiKey }}
+          Nuget__ApiKey: ${{ inputs.PushToProd && secrets.NugetApiKey || secrets.IntNugetApiKey }}
 
       - name: 'Generate artifact attestation'
         uses: actions/attest-build-provenance@v2
